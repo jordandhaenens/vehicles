@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace vehicles
 {
-    public class IVehicle
+    public class Vehicle
     {
-        string Propulsion { get; set; } 
+        public string Propulsion { get; set; } 
 
-        int PassengerCapacity { get; set; }
+        public int PassengerCapacity { get; set; }
 
         public virtual void VehicleOperation(){}
 
@@ -29,10 +30,8 @@ namespace vehicles
     }
 
     //
-    public class JetSki : IVehicle, IwaterVehicle
+    public class JetSki : Vehicle, IwaterVehicle
     {
-        public string Propulsion { get; set; }
-        public int PassengerCapacity { get; set; }
         public double MaxWaterSpeed { get; set; }
 
         // constructor
@@ -42,18 +41,31 @@ namespace vehicles
             this.PassengerCapacity = passengers;
             this.MaxWaterSpeed = speed;
         }
-
         public override void VehicleOperation()
         {
             Console.WriteLine("I propel people through the water");
         }
     }
 
-
-    public class Motorcycle : IVehicle, IlandVehicle
+    public class Yatch : Vehicle, IwaterVehicle
     {
-        public string Propulsion { get; set; }
-        public int PassengerCapacity { get; set; }
+        public double MaxWaterSpeed { get; set; }
+        // constructor
+        public Yatch (string propulsion, int passengers, double speed)
+        {
+            this.Propulsion = propulsion;
+            this.PassengerCapacity = passengers;
+            this.MaxWaterSpeed = speed;
+        }
+         public override void VehicleOperation()
+        {
+            Console.WriteLine("I propel people through the water with style");
+        }
+    }
+
+
+    public class Motorcycle : Vehicle, IlandVehicle
+    {
         public double MaxLandSpeed { get; set; }
 
         // constructor
@@ -70,15 +82,29 @@ namespace vehicles
         }
     }
 
-    public class Cessna : IVehicle, IairVehicle
+    public class Car : Vehicle, IlandVehicle
     {
-        public string Propulsion { get; set; }
-        public int PassengerCapacity { get; set; }
+        public double MaxLandSpeed { get; set; }
+        // constructor
+        public Car (string propulsion, int passengers, double speed)
+        {
+            this.Propulsion = propulsion;
+            this.PassengerCapacity = passengers;
+            this.MaxLandSpeed = speed;
+        }
+        public override void VehicleOperation()
+        {
+            Console.WriteLine("I propel people on land and can go many places");
+        }
+    }
+
+    public class Airplane : Vehicle, IairVehicle
+    {
         public double MaxAirSpeed { get; set; }
         public bool Winged { get; set; }
 
         // constructor
-        public Cessna (string propulsion, int passengers, double speed, bool wings)
+        public Airplane (string propulsion, int passengers, double speed, bool wings)
         {
             this.Propulsion = propulsion;
             this.PassengerCapacity = passengers;
@@ -91,13 +117,70 @@ namespace vehicles
         }
     }
 
+    public class Helicopter : Vehicle, IairVehicle
+    {
+        public bool Winged { get; set; }
+        public double MaxAirSpeed { get; set; }
+        // constructor
+        public Helicopter (string propulsion, int passengers, double speed, bool wings)
+        {
+            this.Propulsion = propulsion;
+            this.PassengerCapacity = passengers;
+            this.MaxAirSpeed = speed;
+            this.Winged = wings;
+        }
+        public override void VehicleOperation()
+        {
+            Console.WriteLine("I take off vertically");
+        }
+
+    }
+
 
     class Program
     {
         static void Main(string[] args)
         {
-            JetSki honda = new JetSki("water jet", 3, 35);
             
+            // Build a collection of all vehicles that fly
+            Airplane cessna = new Airplane("propeller", 4, 150, true);
+            Helicopter blackhawk = new Helicopter("Main rotor and Tail rotor", 6, 100, false);
+            List<IairVehicle> airVehicles = new List<IairVehicle>();
+            airVehicles.Add(cessna);
+            airVehicles.Add(blackhawk);
+            
+            // With a single `foreach`, have each vehicle Fly()
+            foreach (Vehicle item in airVehicles) {
+                item.VehicleOperation();
+            }
+            Console.WriteLine("\n");
+
+            // Build a collection of all vehicles that operate on roads
+            Motorcycle CBR600RR = new Motorcycle("inline4 engine", 2, 180);
+            Car subaru = new Car("inline 4 engie and AWD", 5, 120);
+            List<IlandVehicle> landVehicles = new List<IlandVehicle>();
+            landVehicles.Add(CBR600RR);
+            landVehicles.Add(subaru);
+
+            // With a single `foreach`, have each road vehicle Drive()
+            foreach (Vehicle item in landVehicles) {
+                item.VehicleOperation();
+            }
+            Console.WriteLine("\n");
+            
+
+            // Build a collection of all vehicles that operate on water
+            JetSki honda = new JetSki("water jet", 3, 35);
+            Yatch allGold = new Yatch("twin water jet", 20, 30);
+            List<Vehicle> waterVehicles = new List<Vehicle>();
+            waterVehicles.Add(honda);
+            waterVehicles.Add(allGold);
+
+            // With a single `foreach`, have each water vehicle Drive()
+            foreach (Vehicle item in waterVehicles) {
+                item.VehicleOperation();
+            }
+                
         }
     }
 }
