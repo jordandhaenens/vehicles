@@ -2,19 +2,13 @@
 
 namespace vehicles
 {
-    public interface IVehicle
+    public class IVehicle
     {
         string Propulsion { get; set; } 
-        // int Doors { get; set; } 
+
         int PassengerCapacity { get; set; }
-        // bool Winged { get; set; } //air vehicle
-        // string TransmissionType { get; set; }
-        // double EngineVolume { get; set; }
-        // void Start();
-        // void Stop();
-        // void Drive(); 
-        // void Fly();
-        void VehicleOperation();
+
+        public virtual void VehicleOperation(){}
 
     }
 
@@ -39,16 +33,17 @@ namespace vehicles
     {
         public string Propulsion { get; set; }
         public int PassengerCapacity { get; set; }
-        public double MaxWaterSpeed { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public double MaxWaterSpeed { get; set; }
 
         // constructor
-        public JetSki (string value, int cap)
+        public JetSki (string propulsion, int passengers, double speed)
         {
-            this.Propulsion = value;
-            this.PassengerCapacity = cap;
+            this.Propulsion = propulsion;
+            this.PassengerCapacity = passengers;
+            this.MaxWaterSpeed = speed;
         }
 
-        public void VehicleOperation()
+        public override void VehicleOperation()
         {
             Console.WriteLine("I propel people through the water");
         }
@@ -61,7 +56,15 @@ namespace vehicles
         public int PassengerCapacity { get; set; }
         public double MaxLandSpeed { get; set; }
 
-        public void VehicleOperation()
+        // constructor
+        public Motorcycle (string propulsion, int passengers, double speed)
+        {
+            this.Propulsion = propulsion;
+            this.PassengerCapacity = passengers;
+            this.MaxLandSpeed = speed;
+        }
+
+        public override void VehicleOperation()
         {
             Console.WriteLine("I propel people on land with incredible acceleration");
         }
@@ -71,11 +74,20 @@ namespace vehicles
     {
         public string Propulsion { get; set; }
         public int PassengerCapacity { get; set; }
-        public bool Winged { get; set; }
         public double MaxAirSpeed { get; set; }
-        public void VehicleOperation()
+        public bool Winged { get; set; }
+
+        // constructor
+        public Cessna (string propulsion, int passengers, double speed, bool wings)
         {
-            Console.WriteLine("I propel people through the air like a bird");
+            this.Propulsion = propulsion;
+            this.PassengerCapacity = passengers;
+            this.MaxAirSpeed = speed;
+            this.Winged = wings;
+        }
+        public override void VehicleOperation()
+        {
+            Console.WriteLine("I propel people through the air like a majestic bird");
         }
     }
 
@@ -84,7 +96,7 @@ namespace vehicles
     {
         static void Main(string[] args)
         {
-            JetSki honda = new JetSki("water jet", 3);
+            JetSki honda = new JetSki("water jet", 3, 35);
             
         }
     }
