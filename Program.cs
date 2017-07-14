@@ -145,13 +145,15 @@ namespace vehicles
             // Build a collection of all vehicles that fly
             Airplane cessna = new Airplane("propeller", 4, 150, true);
             Helicopter blackhawk = new Helicopter("Main rotor and Tail rotor", 6, 100, false);
-            List<IairVehicle> airVehicles = new List<IairVehicle>();
+            List<Vehicle> airVehicles = new List<Vehicle>();
             airVehicles.Add(cessna);
             airVehicles.Add(blackhawk);
             
             // With a single `foreach`, have each vehicle Fly()
-            foreach (Vehicle item in airVehicles) {
+            foreach (var item in airVehicles) {
+                Console.WriteLine($"my method of propulsion is {item.Propulsion} and I can carry {item.PassengerCapacity} passengers.");
                 item.VehicleOperation();
+                // I can't reference any property or method that is specific to different classes (line 146-147) even if they are both of class Vehicle and interface IairVehicle
             }
             Console.WriteLine("\n");
 
